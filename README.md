@@ -7,27 +7,20 @@ a small `mechanism_design` Python package that holds the reusable code.
 
 - `contract.ipynb` builds a 24-hour load-reduction scenario, solves the
   deterministic benchmarks, solves the convex robust proposed contract for
-  selected Wasserstein radii, plots IC/IR diagnostics and scenario comparisons,
-  and generates Figure 4.a/4.b for `Ks` and `Krt` misspecification.
+  selected Wasserstein radii, plots IC/IR diagnostics and scenario comparisons.
+
 - `robust_nonconvex.ipynb` solves the direct nonlinear robust formulation. It
-  now supports both the original SciPy `trust-constr` solver and CasADi/IPOPT.
-  CasADi is the default.
-- `parvizi_figures_adapted.ipynb` regenerates the figure families from
-  `ParviziPaperCode/` using the current Python scenario, solvers, and adapted
-  Stackelberg/linear baselines.
+  now supports  CasADi/IPOPT.CasADi is the default.
+
 - `mechanism_design/data.py` loads the checked-in CSV profiles, decomposes load
   into critical/curtailable/shiftable parts, builds TOU prices, and samples a
   feasible `Dreq`.
 - `mechanism_design/contract_models.py` contains the perfect-information,
   naive, proposed, and convex robust contract solvers plus IC/IR calculations.
-- `mechanism_design/parvizi_figures.py` contains the adapted Parvizi baseline
-  builders, scaling/sensitivity experiments, and plotting helpers.
 - `mechanism_design/nonconvex.py` contains the direct nonlinear robust model,
-  variable packing/unpacking, SciPy solve path, and CasADi solve path.
+  variable packing/unpacking, and CasADi solve path.
 - `mechanism_design/transport.py` contains discrete OT/Wasserstein helpers.
 - `mechanism_design/plots.py` contains plotting helpers used by the notebooks.
-- `mechanism_design/sensitivity.py` contains the `Ks`/`Krt`
-  misspecification sweep used for Figure 4.a/4.b.
 
 ## Data
 
@@ -68,12 +61,6 @@ The nonconvex notebook defaults to:
 casadi
 ```
 
-To use the original nonlinear solver instead, set this in
-`robust_nonconvex.ipynb`:
-
-```python
-NONCONVEX_SOLVER = "scipy"
-```
 
 ## Set up a Python environment for Jupyter
 
@@ -108,14 +95,13 @@ Jupyter kernel picker.
 2. Adjust the type distribution `f` or robust radii if needed.
 3. Run the notebook top to bottom.
 4. Open `robust_nonconvex.ipynb`.
-5. Keep `NONCONVEX_SOLVER = "casadi"` for CasADi/IPOPT, or change it to
-   `"scipy"` for the original `trust-constr` solver.
+5. Keep `NONCONVEX_SOLVER = "casadi"` for CasADi/IPOPT.
 
 `contract.ipynb` uses the original contract-notebook settings:
 `price_scale=2.0` and `Dreq` sampled from `100` to `200`.
 
 `robust_nonconvex.ipynb` uses the original nonconvex-notebook settings:
-`price_scale=2.2` and `Dreq` sampled from `10` to `440`.
+`price_scale=2.0` and `Dreq` sampled from `100` to `200`.
 
 ## Figure Output
 
@@ -127,36 +113,7 @@ figures/
 
 The default export resolution is 600 dpi.
 
-Figure 4.a and Figure 4.b show the effect of misspecifying the constraint
-parameters `Ks` and `Krt`:
 
-- Figure 4.a: central operator profit versus estimated-cap / true-cap factor.
-- Figure 4.b: distribution-weighted average hourly customer demand reduction
-  versus estimated-cap / true-cap factor.
-
-For each point, the contract is solved using the estimated cap, then checked
-against the original true physical caps. Red points or red curve segments mark
-contracts that are no longer feasible under the true caps, or cases where the
-estimated problem cannot be solved.
-
-The adapted Parvizi-paper figures are saved in:
-
-```text
-figures/parvizi_adapted/
-```
-
-This includes the root comparison figures, the demand-requirement and
-customer-count scaling figures, the demand-prediction sensitivity figures, and
-the computational-time figure. The robust companion figures from
-`contract.ipynb` are saved in:
-
-```text
-figures/parvizi_adapted/Robust/
-```
-
-Those robust figures include the Parvizi-style utility, demand-reduction, and
-incentive comparisons with robust contracts at `r=0.1` and `r=0.8`, plus robust
-IC and load-reduction diagnostics.
 
 ## Notes
 
